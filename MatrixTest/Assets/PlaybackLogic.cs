@@ -5,8 +5,8 @@ using UnityEngine.Video;
 
 public class PlaybackLogic : MonoBehaviour
 {
-    public VideoClip idleClip;
-    public VideoClip[] videoClips;
+    public string idleClipUrl;
+    public string[] videoClipUrls;
 
     private VideoPlayer videoPlayer;
     private bool playingIdle;
@@ -26,8 +26,8 @@ public class PlaybackLogic : MonoBehaviour
         playingIdle = true;
         videoPlayer.playbackSpeed = 0.1f;
         videoPlayer.isLooping = true;
-        videoPlayer.clip = idleClip;
-        videoPlayer.SetDirectAudioVolume(0, 0f);
+        videoPlayer.url = idleClipUrl;
+        videoPlayer.SetDirectAudioMute(0, true);
         videoPlayer.loopPointReached -= VideoPlayer_loopPointReached;
         videoPlayer.Play();
     }
@@ -36,12 +36,12 @@ public class PlaybackLogic : MonoBehaviour
     {
         if (playingIdle)
         {
-            int videoIndex = Mathf.CeilToInt(Random.value * videoClips.Length - 1);
+            int videoIndex = Mathf.CeilToInt(Random.value * videoClipUrls.Length - 1);
             playingIdle = false;
             videoPlayer.playbackSpeed = 1.0f;
             videoPlayer.isLooping = false;
-            videoPlayer.clip = videoClips[videoIndex];
-            videoPlayer.SetDirectAudioVolume(0, 1f);
+            videoPlayer.url = videoClipUrls[videoIndex];
+            videoPlayer.SetDirectAudioMute(0, false);
             videoPlayer.loopPointReached += VideoPlayer_loopPointReached;
             videoPlayer.Play();
         }
